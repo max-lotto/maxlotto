@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>MaxLotto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #f0f0f0, #e0e0e0);
+    }
+    header {
+      background: #003366;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+    .content {
+      padding: 10px;
+      margin-bottom: 70px;
+    }
+    .section {
+      margin-bottom: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .section h2 {
+      margin: 0;
+      padding: 10px;
+      font-size: 18px;
+      background: #003366;
+      color: white;
+    }
+    .box {
+      padding: 10px;
+      background: white;
+    }
+    .ritardatari { background: #FFA500; }
+    .frequenti { background: #003366; }
+    .decine { background: #6c757d; }
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #003366;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 10;
+    }
+    .tab-bar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+    }
+    .hidden { display: none; }
+    .numeri {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px;
+      justify-content: center;
+    }
+    .numero {
+      width: 40px;
+      height: 40px;
+      background: #FFA500;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .numero:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 10px #FFA500;
+    }
+    .numero.blu {
+      background: #003366;
+    }
+    .ruota-selector {
+      margin: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    button#genera {
+      background-color: #FFA500;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button#genera:hover {
+      background-color: #ff9900;
+    }
+  </style>
+</head>
+<body>
+
+<header id="pageTitle">Statistiche</header>
+
+<div class="ruota-selector">
+  <label for="ruotaSelezionata">Seleziona Ruota:</label>
+  <select id="ruotaSelezionata">
+    <option value="tutte">Tutte le ruote</option>
+    <option value="Bari">Bari</option>
+    <option value="Cagliari">Cagliari</option>
+    <option value="Firenze">Firenze</option>
+    <option value="Genova">Genova</option>
+    <option value="Milano">Milano</option>
+    <option value="Napoli">Napoli</option>
+    <option value="Palermo">Palermo</option>
+    <option value="Roma">Roma</option>
+    <option value="Torino">Torino</option>
+    <option value="Venezia">Venezia</option>
+    <option value="Nazionale">Nazionale</option>
+  </select>
+</div>
+
+<div class="content">
+  <div id="statistiche">
+    <div class="section ritardatari">
+      <h2>Ritardatari</h2>
+      <div class="box" id="ritardatariBox"></div>
+    </div>
+    <div class="section frequenti">
+      <h2>Frequenti</h2>
+      <div class="box" id="frequentiBox"></div>
+    </div>
+    <div class="section decine">
+      <h2>Decine</h2>
+      <div class="box" id="decineBox"></div>
+    </div>
+  </div>
+
+  <div id="estrazioni" class="hidden">
+    <h2>Ultime Estrazioni</h2>
+    <div class="section">
+      <h2>N°182</h2>
+      <div class="numeri">
+        <div class="numero">2</div>
+        <div class="numero">3</div>
+        <div class="numero">5</div>
+        <div class="numero">7</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="previsioni" class="hidden">
+    <h2>Previsioni</h2>
+    <button id="genera">Genera Previsione</button>
+    <div class="section">
+      <div class="numeri" id="previsioniBox"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button onclick="showTab('estrazioni')">Estrazioni</button>
+  <button onclick="showTab('statistiche')">Statistiche</button>
+  <button onclick="showTab('previsioni')">Previsioni</button>
+  <button>Vincite</button>
+</div>
+
+<script>
+function showTab(tab) {
+  document.getElementById('statistiche').classList.add('hidden');
+  document.getElementById('estrazioni').classList.add('hidden');
+  document.getElementById('previsioni').classList.add('hidden');
+  document.getElementById(tab).classList.remove('hidden');
+
+  if (tab === 'statistiche') {
+    document.getElementById('pageTitle').innerText = 'Statistiche';
+  } else if (tab === 'estrazioni') {
+    document.getElementById('pageTitle').innerText = 'Ultime Estrazioni';
+  } else if (tab === 'previsioni') {
+    document.getElementById('pageTitle').innerText = 'Previsioni';
+  }
+}
+
+const estrazioni = [
+  [5, 20, 33, 48, 70],
+  [1, 5, 22, 40, 77],
+  [3, 22, 36, 48, 71],
+  [10, 20, 30, 40, 50],
+  [15, 25, 35, 45, 55],
+  [60, 70, 80, 90, 1],
+  [2, 12, 22, 32, 42],
+  [8, 18, 28, 38, 48],
+  [9, 19, 29, 39, 49],
+  [4, 14, 24, 34, 44]
+];
+
+const frequenze = {};
+const ultimiAvvistamenti = {};
+const totaleEstrazioni = estrazioni.length;
+
+for (let i = 0; i < totaleEstrazioni; i++) {
+  const estrazione = estrazioni[i];
+  for (const numero of estrazione) {
+    frequenze[numero] = (frequenze[numero] || 0) + 1;
+    ultimiAvvistamenti[numero] = i;
+  }
+}
+
+const ritardi = {};
+for (let n = 1; n <= 90; n++) {
+  ritardi[n] = ultimiAvvistamenti[n] !== undefined ? totaleEstrazioni - ultimiAvvistamenti[n] - 1 : totaleEstrazioni;
+}
+
+const topRitardatari = Object.entries(ritardi).sort((a, b) => b[1] - a[1]).slice(0, 20);
+
+const ritardatariBox = document.getElementById('ritardatariBox');
+const frequentiBox = document.getElementById('frequentiBox');
+const decineBox = document.getElementById('decineBox');
+
+topRitardatari.slice(0, 5).forEach(([numero, ritardo]) => {
+  ritardatariBox.innerHTML += `<div class="numero">${numero}</div> - Ritardo: ${ritardo}<br>`;
+});
+
+document.getElementById('genera').addEventListener('click', function() {
+  const previsioniBox = document.getElementById('previsioniBox');
+  previsioniBox.innerHTML = '';
+  const numeriPrevisti = topRitardatari
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 5)
+    .map(([numero]) => numero);
+
+  numeriPrevisti.forEach(numero => {
+    previsioniBox.innerHTML += `<div class="numero">${numero}</div>`;
+  });
+});
+</script>
+
+</body>
+</html>
