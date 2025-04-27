@@ -32,5 +32,7 @@ async function caricaUltimaEstrazione() {
   }
 }
 
+// Avvia caricamento appena apre pagina
 caricaUltimaEstrazione();
+
 
