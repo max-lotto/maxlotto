@@ -38,6 +38,11 @@ export default async function handler(req, res) {
       });
     });
 
+    // Se ?last=true ritorna solo ultima estrazione
+    if (req.query.last === 'true') {
+      return res.status(200).json(estrazioni[0]);
+    }
+
     res.status(200).json(estrazioni);
   } catch (error) {
     console.error(error);
